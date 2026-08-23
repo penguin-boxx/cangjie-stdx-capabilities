@@ -30,6 +30,7 @@ public interface ToJson {
      * @throws JsonException if DataModel cannot be converted to JsonValue.
      */
     func toJson(): JsonValue
+    throws JsonException
 
     /**
      * Parses JsonValue data into DataModel.
@@ -42,6 +43,7 @@ public interface ToJson {
      * @throws JsonException if jv cannot be converted to DataModel.
      */
     static func fromJson(jv: JsonValue): DataModel
+    throws JsonException
 }
 
 /**
@@ -58,7 +60,8 @@ extend DataModel <: ToJson {
      *
      * @throws JsonException if jv cannot be converted to DataModel.
      */
-    public static func fromJson(jv: JsonValue): DataModel {
+    public static func fromJson(jv: JsonValue): DataModel 
+    throws JsonException {
         match (jv) {
             case jb: JsonBool => DataModelBool(jb.getValue())
             case ji: JsonInt => DataModelInt(ji.getValue())
@@ -122,7 +125,8 @@ extend DataModel <: ToJson {
      *
      * @throws JsonException if DataModel cannot be converted to JsonValue.
      */
-    public func toJson(): JsonValue {
+    public func toJson(): JsonValue 
+    throws JsonException {
         match (this) {
             case _: DataModelNull => return JsonNull()
             case dmb: DataModelBool => return JsonBool(dmb.getValue())

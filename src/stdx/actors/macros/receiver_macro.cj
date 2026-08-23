@@ -29,11 +29,13 @@ import std.ast.*
  * 4. does not have an explicit return type.
  *
  */
-public macro Receiver(attrs: Tokens, input: Tokens): Tokens {
+public macro Receiver(attrs: Tokens, input: Tokens): Tokens
+throws MacroException {
     ReceiverMacro.run(attrs, input)
 }
 
-public macro Receiver(input: Tokens): Tokens {
+public macro Receiver(input: Tokens): Tokens
+throws MacroException {
     ReceiverMacro.run(Tokens(), input)
 }
 

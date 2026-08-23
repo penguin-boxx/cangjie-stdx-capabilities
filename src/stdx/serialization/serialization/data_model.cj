@@ -364,7 +364,8 @@ func createDataModelSeq<T>(list: Collection<T>): DataModelSeq where T <: Seriali
  *
  * @since 0.18.4
  */
-public func field<T>(name: String, data: T): Field where T <: Serializable<T> {
+public func field<T>(name: String, data: T): Field
+throws DataModelException where T <: Serializable<T> {
     return Field(name, data.serialize())
 }
 

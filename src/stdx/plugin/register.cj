@@ -11,7 +11,8 @@ macro package stdx.plugin
 public import stdx.plugin.manager.*
 import std.ast.*
 
-public macro CHIRPlugin(input: Tokens): Tokens {
+public macro CHIRPlugin(input: Tokens): Tokens
+throws Exception {
     var subClassDecl: ClassDecl
     if (let Some(decl) <- (parseDecl(input) as ClassDecl)) {
         subClassDecl = decl

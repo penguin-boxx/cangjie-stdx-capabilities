@@ -108,7 +108,8 @@ public class URL <: ToString {
     }
 
     public prop query: ?String {
-        get() {
+        get()
+        throws UrlSyntaxException {
             match {
                 case _query.isEmpty() && !_rawQuery.isEmpty() =>
                     if (_rawQuery == "?") {
@@ -146,7 +147,8 @@ public class URL <: ToString {
     }
 
     public prop queryForm: Form {
-        get() {
+        get()
+        throws UrlSyntaxException {
             getQueryForm()
         }
     }
@@ -167,7 +169,8 @@ public class URL <: ToString {
      * Ref: https://www.rfc-editor.org/rfc/rfc3986#section-6.2.2.1
      */
     // cjlint-ignore -end
-    public init(scheme!: String, hostName!: String, path!: String) {
+    public init(scheme!: String, hostName!: String, path!: String)
+    throws UrlSyntaxException {
         verifyInit(scheme, hostName, path)
         if (!scheme.isEmpty()) {
             verifyScheme(scheme)
@@ -197,7 +200,8 @@ public class URL <: ToString {
      * or if the path is begin with two slash characters while authority is not present
      * @throws IllegalArgumentException if there is an invalid utf8 leading code in 'rawUrl'
      */
-    public static func parse(rawUrl: String): URL {
+    public static func parse(rawUrl: String): URL
+    throws UrlSyntaxException {
         return URL().parseURL(rawUrl)
     }
 
@@ -787,7 +791,8 @@ public class URL <: ToString {
         path!: Option<String> = None,
         query!: Option<String> = None,
         fragment!: Option<String> = None
-    ): URL {
+    ): URL
+    throws UrlSyntaxException {
         let newUrl = this.shallowCopy()
         if (let Some(v) <- scheme) {
             verifyScheme(v)
@@ -900,7 +905,8 @@ public class URL <: ToString {
      *
      * @since 0.19.5
      */
-    public func resolveURL(ref: URL): URL {
+    public func resolveURL(ref: URL): URL
+    throws UrlSyntaxException {
         let result = ref.shallowCopy()
         if (!ref.opaque.isEmpty()) {
             return result
@@ -1089,11 +1095,13 @@ public class URL <: ToString {
         return result.toString()
     }
 
-    public static func decode(url: String): String {
+    public static func decode(url: String): String
+    throws UrlSyntaxException {
         return decodeByTuple(url, false)
     }
 
-    public static func decodeComponent(component: String): String {
+    public static func decodeComponent(component: String): String
+    throws UrlSyntaxException {
         return decodeByTuple(component, true)
     }
 
