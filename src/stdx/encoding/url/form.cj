@@ -50,7 +50,8 @@ public class Form {
      *
      * @throws UrlSyntaxException if get an invalid URL escape
      */
-    public init(queryComponent: String) {
+    public init(queryComponent: String)
+    throws UrlSyntaxException {
         this()
         let arr = queryComponent.split("&", removeEmpty: true)
         for (query in arr) {

@@ -25,11 +25,13 @@ import std.collection.ArrayList
  *
  * @throws MacroException if input is not a ClassDecl, or if the ClassDecl has either OPEN, ABSTRACT or SEALED modifier.
  */
-public macro Actor(attrs: Tokens, input: Tokens): Tokens {
+public macro Actor(attrs: Tokens, input: Tokens): Tokens
+throws MacroException {
     ActorMacro.run(attrs, input)
 }
 
-public macro Actor(input: Tokens): Tokens {
+public macro Actor(input: Tokens): Tokens
+throws MacroException {
     ActorMacro.run(Tokens(), input)
 }
 

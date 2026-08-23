@@ -26,6 +26,7 @@ public interface Serializable<T> {
      * @since 0.17.4
      */
     func serialize(): DataModel
+    throws DataModelException
 
     /**
      * Deserializing DataModel into object.
@@ -36,6 +37,7 @@ public interface Serializable<T> {
      * @since 0.17.4
      */
     static func deserialize(dm: DataModel): T
+    throws DataModelException
 }
 
 /**
@@ -63,7 +65,8 @@ extend Int64 <: Serializable<Int64> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): Int64 {
+    public static func deserialize(dm: DataModel): Int64 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => dmi.getValue()
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -96,7 +99,8 @@ extend Int32 <: Serializable<Int32> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): Int32 {
+    public static func deserialize(dm: DataModel): Int32 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => Int32(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -129,7 +133,8 @@ extend Int16 <: Serializable<Int16> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): Int16 {
+    public static func deserialize(dm: DataModel): Int16 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => Int16(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -162,7 +167,8 @@ extend Int8 <: Serializable<Int8> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): Int8 {
+    public static func deserialize(dm: DataModel): Int8 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => Int8(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -195,7 +201,8 @@ extend UInt64 <: Serializable<UInt64> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): UInt64 {
+    public static func deserialize(dm: DataModel): UInt64 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => UInt64(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -228,7 +235,8 @@ extend UInt32 <: Serializable<UInt32> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): UInt32 {
+    public static func deserialize(dm: DataModel): UInt32 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => UInt32(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -261,7 +269,8 @@ extend UInt16 <: Serializable<UInt16> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): UInt16 {
+    public static func deserialize(dm: DataModel): UInt16 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => UInt16(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -294,7 +303,8 @@ extend UInt8 <: Serializable<UInt8> {
      *
      * @throws DataModelException if dm is not DataModelInt
      */
-    public static func deserialize(dm: DataModel): UInt8 {
+    public static func deserialize(dm: DataModel): UInt8 
+    throws DataModelException {
         return match (dm) {
             case dmi: DataModelInt => UInt8(dmi.getValue())
             case _ => throw DataModelException("This data is not DataModelInt.")
@@ -327,7 +337,8 @@ extend Float64 <: Serializable<Float64> {
      *
      * @throws DataModelException if data is not DataModelFloat
      */
-    public static func deserialize(dm: DataModel): Float64 {
+    public static func deserialize(dm: DataModel): Float64 
+    throws DataModelException {
         return match (dm) {
             case dmf: DataModelFloat => dmf.getValue()
             case dmi: DataModelInt => 
@@ -367,7 +378,8 @@ extend Float32 <: Serializable<Float32> {
      *
      * @throws DataModelException if data is not DataModelFloat
      */
-    public static func deserialize(dm: DataModel): Float32 {
+    public static func deserialize(dm: DataModel): Float32 
+    throws DataModelException {
         return match (dm) {
             case dmf: DataModelFloat => Float32(dmf.getValue())
             case _ => throw DataModelException("This data is not DataModelFloat.")
@@ -400,7 +412,8 @@ extend Float16 <: Serializable<Float16> {
      *
      * @throws DataModelException if data is not DataModelFloat
      */
-    public static func deserialize(dm: DataModel): Float16 {
+    public static func deserialize(dm: DataModel): Float16 
+    throws DataModelException {
         return match (dm) {
             case dmf: DataModelFloat => Float16(dmf.getValue())
             case _ => throw DataModelException("This data is not DataModelFloat.")
@@ -433,7 +446,8 @@ extend Bool <: Serializable<Bool> {
      *
      * @throws DataModelException if data is not DataModelBool
      */
-    public static func deserialize(dm: DataModel): Bool {
+    public static func deserialize(dm: DataModel): Bool 
+    throws DataModelException {
         return match (dm) {
             case dmb: DataModelBool => dmb.getValue()
             case _ => throw DataModelException("This data is not DataModelBool.")
@@ -466,7 +480,8 @@ extend String <: Serializable<String> {
      *
      * @throws DataModelException if data is not DataModelString
      */
-    public static func deserialize(dm: DataModel): String {
+    public static func deserialize(dm: DataModel): String 
+    throws DataModelException {
         return match (dm) {
             case dms: DataModelString => dms.getValue()
             case _ => throw DataModelException("This data is not DataModelString.")
@@ -497,17 +512,17 @@ extend Rune <: Serializable<Rune> {
      *
      * @since 0.17.4
      *
-     * @throws DataModelException if data is not DataModelString
-     * @throws Exception if data is not Rune
+     * @throws DataModelException if data is not DataModelString, or is not a single Rune
      */
-    public static func deserialize(dm: DataModel): Rune {
+    public static func deserialize(dm: DataModel): Rune 
+    throws DataModelException {
         let charStr: String = match (dm) {
             case dms: DataModelString => dms.getValue()
             case _ => throw DataModelException("This data is not DataModelString.")
         }
         let runes = charStr.toRuneArray()
         if (runes.size != 1) {
-            throw Exception("This data is not Rune.")
+            throw DataModelException("This data is not Rune.")
         }
         return runes[0]
     }
@@ -524,7 +539,8 @@ extend<T> Option<T> <: Serializable<Option<T>> where T <: Serializable<T> {
      *
      * @since 0.18.4
      */
-    public func serialize(): DataModel {
+    public func serialize(): DataModel
+    throws DataModelException {
         return match (this) {
             case Some(x) => x.serialize()
             case None => DataModelNull()
@@ -539,7 +555,8 @@ extend<T> Option<T> <: Serializable<Option<T>> where T <: Serializable<T> {
      *
      * @since 0.18.4
      */
-    public static func deserialize(dm: DataModel): Option<T> {
+    public static func deserialize(dm: DataModel): Option<T> 
+    throws DataModelException {
         return match (dm) {
             case dmn: DataModelNull => Option<T>.None
             case _ => Option<T>.Some(T.deserialize(dm))
@@ -558,7 +575,8 @@ extend<T> Array<T> <: Serializable<Array<T>> where T <: Serializable<T> {
      *
      * @since 0.29.3
      */
-    public func serialize(): DataModel {
+    public func serialize(): DataModel
+    throws DataModelException {
         return createDataModelSeq<T>(this)
     }
 
@@ -572,7 +590,8 @@ extend<T> Array<T> <: Serializable<Array<T>> where T <: Serializable<T> {
      *
      * @throws DataModelException if data is not DataModelSeq
      */
-    public static func deserialize(dm: DataModel): Array<T> {
+    public static func deserialize(dm: DataModel): Array<T> 
+    throws DataModelException {
         let data: ArrayList<DataModel> = match (dm) {
             case dms: DataModelSeq => dms.getItems()
             case _ => throw DataModelException("This data is not DataModelSeq.")
@@ -597,7 +616,8 @@ extend<T> ArrayList<T> <: Serializable<ArrayList<T>> where T <: Serializable<T> 
      *
      * @since 0.22.4
      */
-    public func serialize(): DataModel {
+    public func serialize(): DataModel
+    throws DataModelException {
         return createDataModelSeq<T>(this)
     }
 
@@ -611,7 +631,8 @@ extend<T> ArrayList<T> <: Serializable<ArrayList<T>> where T <: Serializable<T> 
      *
      * @throws DataModelException if data is not DataModelSeq
      */
-    public static func deserialize(dm: DataModel): ArrayList<T> {
+    public static func deserialize(dm: DataModel): ArrayList<T> 
+    throws DataModelException {
         var data: ArrayList<DataModel> = match (dm) {
             case dms: DataModelSeq => dms.getItems()
             case _ => throw DataModelException("This data is not DataModelSeq.")
@@ -635,7 +656,8 @@ extend<T> HashSet<T> <: Serializable<HashSet<T>> where T <: Serializable<T> & Ha
      *
      * @since 0.23.3
      */
-    public func serialize(): DataModel {
+    public func serialize(): DataModel
+    throws DataModelException {
         return createDataModelSeq<T>(this)
     }
 
@@ -649,7 +671,8 @@ extend<T> HashSet<T> <: Serializable<HashSet<T>> where T <: Serializable<T> & Ha
      *
      * @throws DataModelException if data is not DataModelSeq
      */
-    public static func deserialize(dm: DataModel): HashSet<T> {
+    public static func deserialize(dm: DataModel): HashSet<T> 
+    throws DataModelException {
         var data: DataModelSeq = match (dm) {
             case dms: DataModelSeq => dms
             case _ => throw DataModelException("This data is not DataModelSeq.")
@@ -676,7 +699,8 @@ extend<K, V> HashMap<K, V> <: Serializable<HashMap<K, V>> where K <: Serializabl
      *
      * @throws DataModelException if the type of key of this hashmap is not String
      */
-    public func serialize(): DataModel {
+    public func serialize(): DataModel
+    throws DataModelException {
         var dms: DataModelStruct = DataModelStruct()
         for ((k, v) in this) {
             match (k) {
@@ -697,7 +721,8 @@ extend<K, V> HashMap<K, V> <: Serializable<HashMap<K, V>> where K <: Serializabl
      *
      * @throws DataModelException if dm is not DataModelStruct type or the field of dm is not String type
      */
-    public static func deserialize(dm: DataModel): HashMap<K, V> {
+    public static func deserialize(dm: DataModel): HashMap<K, V> 
+    throws DataModelException {
         var data: DataModelStruct = match (dm) {
             case dms: DataModelStruct => dms
             case _ => throw DataModelException("This data is not DataModelStruct.")
