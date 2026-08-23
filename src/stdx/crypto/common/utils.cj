@@ -62,19 +62,23 @@ public class CryptoException <: Exception {
     }
 }
 
-protected func malloc<T>(count!: Int64, initial!: ?T): NativePointerResource<T> where T <: CType {
+protected func malloc<T>(count!: Int64, initial!: ?T): NativePointerResource<T>
+throws CryptoException where T <: CType {
     NativePointerResource<T>(count, initial)
 }
 
-protected func malloc<T>(count!: Int64): NativePointerResource<T> where T <: CType {
+protected func malloc<T>(count!: Int64): NativePointerResource<T>
+throws CryptoException where T <: CType {
     NativePointerResource<T>(count, Option<T>.None)
 }
 
-protected func malloc<T>(initial!: ?T): NativePointerResource<T> where T <: CType {
+protected func malloc<T>(initial!: ?T): NativePointerResource<T>
+throws CryptoException where T <: CType {
     NativePointerResource<T>(1, initial)
 }
 
-protected func malloc<T>(): NativePointerResource<T> where T <: CType {
+protected func malloc<T>(): NativePointerResource<T>
+throws CryptoException where T <: CType {
     NativePointerResource<T>(1, Option<T>.None)
 }
 
@@ -85,14 +89,16 @@ protected unsafe func mallocCString(str: ?String): CStringResource {
     }
 }
 
-protected func mallocCopyOf<T>(source: ?Array<T>): NativePointerResource<T> where T <: CType {
+protected func mallocCopyOf<T>(source: ?Array<T>): NativePointerResource<T>
+throws CryptoException where T <: CType {
     match (source) {
         case Some(source) => mallocCopyOf(source)
         case None => NativePointerResource<T>()
     }
 }
 
-protected func mallocCopyOf<T>(source: Array<T>): NativePointerResource<T> where T <: CType {
+protected func mallocCopyOf<T>(source: Array<T>): NativePointerResource<T>
+throws CryptoException where T <: CType {
     let result = NativePointerResource<T>(source.size, None)
     for (index in 0..source.size) {
         unsafe {
@@ -124,7 +130,8 @@ protected class NativePointerResource<T> <: Resource where T <: CType {
         nativePointer = CPointer()
     }
 
-    protected init(count: Int64, sample: ?T) {
+    protected init(count: Int64, sample: ?T)
+    throws CryptoException {
         unsafe {
             if (count <= 0) {
                 throw IllegalArgumentException("Count should be positive: ${count}.")
@@ -155,7 +162,8 @@ protected class NativePointerResource<T> <: Resource where T <: CType {
     }
 }
 
-protected unsafe func toArray(ptr: CPointer<Byte>, size: UIntNative): Array<Byte> {
+protected unsafe func toArray(ptr: CPointer<Byte>, size: UIntNative): Array<Byte>
+throws CryptoException {
     if (ptr.isNull() && size != 0) {
         throw NoneValueException("Native pointer is NULL.")
     }

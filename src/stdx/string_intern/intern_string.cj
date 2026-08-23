@@ -37,6 +37,7 @@ public interface Internable {
      * @param strMaxLength max lenght of string in dynamic string pool
      */
     static func configInternPool(capacity!: Int64, strMaxLength!: Int64): Unit
+    throws Exception
 }
 
 class InternStringPoolHolder {
@@ -101,7 +102,8 @@ extend String <: Internable {
      * @param capacity dynamic string pool capacity
      * @param strMaxLength max lenght of string in dynamic string pool
      */
-    public static func configInternPool(capacity!: Int64 = 8192, strMaxLength!: Int64 = 512): Unit {
+    public static func configInternPool(capacity!: Int64 = 8192, strMaxLength!: Int64 = 512): Unit
+    throws Exception {
         if (capacity <= 0) {
             throw IllegalArgumentException("capacity should be positive: " + capacity.toString())
         }

@@ -20,11 +20,13 @@ public struct PemEntry <: ToString {
         public let label: String,
         public let headers: Array<(String, String)>,
         public let body: ?DerBlob
-    ) {
+    )
+    throws CryptoException {
         validateLabel(unsafe { label.rawData() })
     }
 
-    public init(label: String, body: DerBlob) {
+    public init(label: String, body: DerBlob)
+    throws CryptoException {
         this(label, [], body)
     }
 

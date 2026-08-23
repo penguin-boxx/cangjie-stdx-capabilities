@@ -27,7 +27,8 @@ public class UnhandledCommandException <: Exception {
 }
 
 public abstract class Command<Res> {
-    public open func defaultImpl(): Res {
+    public open func defaultImpl(): Res
+    throws UnhandledCommandException {
         throw UnhandledCommandException()
     }
 }

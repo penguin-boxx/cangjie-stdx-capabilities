@@ -432,7 +432,8 @@ public func csv<T>(
     skipRows!: Array<UInt64> = [],
     skipColumns!: Array<UInt64> = [],
     skipEmptyLines!: Bool = false
-): CsvStrategy<T> where T <: Serializable<T> {
+): CsvStrategy<T>
+throws FSException where T <: Serializable<T> {
     CsvStrategy<T>(
         fileName,
         delimiter: delimiter,
@@ -472,7 +473,8 @@ public func tsv<T>(
     skipRows!: Array<UInt64> = [],
     skipColumns!: Array<UInt64> = [],
     skipEmptyLines!: Bool = false
-): CsvStrategy<T> where T <: Serializable<T> {
+): CsvStrategy<T>
+throws FSException where T <: Serializable<T> {
     CsvStrategy<T>(
         fileName,
         delimiter: TSV_DELIMITER,

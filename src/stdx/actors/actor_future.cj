@@ -32,7 +32,8 @@ public class ActorFuture<T> {
     private let mtx = Mutex()
     private let cond: Condition
 
-    public func get(): T {
+    public func get(): T
+    throws Exception {
         if (isReady.load()) {
             return result.getOrThrow()
         }
@@ -45,7 +46,8 @@ public class ActorFuture<T> {
         }
     }
 
-    public func get(timeout: Duration): Option<T> {
+    public func get(timeout: Duration): Option<T>
+    throws Exception {
         if (timeout <= Duration.Zero) {
             return Some(get())
         }
@@ -69,7 +71,8 @@ public class ActorFuture<T> {
         return tryGet()
     }
 
-    public func tryGet(): Option<T> {
+    public func tryGet(): Option<T>
+    throws Exception {
         if (isReady.load()) {
             return Some(result.getOrThrow())
         }

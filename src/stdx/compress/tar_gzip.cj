@@ -8,7 +8,7 @@
 
 package stdx.compress
 
-import std.fs.{Path, File, OpenMode}
+import std.fs.{Path, File, OpenMode, FSException}
 import std.io.{InputStream, OutputStream}
 import stdx.compress.tar.Tar
 import stdx.compress.zlib.{DecompressInputStream, CompressOutputStream, WrapType}
@@ -16,13 +16,15 @@ import stdx.compress.zlib.{DecompressInputStream, CompressOutputStream, WrapType
 public class TarGzip {
     private init() { } // static class
 
-    public static func archive(fromDir!: String, destFile!: String, includeBaseDirectory!: Bool): Unit {
+    public static func archive(fromDir!: String, destFile!: String, includeBaseDirectory!: Bool): Unit
+    throws FSException {
         try (file = File(destFile, OpenMode.Write)) {
             TarGzip.archive(fromDir: Path(fromDir), destStream: file, includeBaseDirectory: includeBaseDirectory)
         }
     }
 
-    public static func archive(fromDir!: Path, destFile!: Path, includeBaseDirectory!: Bool): Unit {
+    public static func archive(fromDir!: Path, destFile!: Path, includeBaseDirectory!: Bool): Unit
+    throws FSException {
         try (file = File(destFile, OpenMode.Write)) {
             TarGzip.archive(fromDir: fromDir, destStream: file, includeBaseDirectory: includeBaseDirectory)
         }
@@ -36,14 +38,16 @@ public class TarGzip {
         TarGzip.archive(fromDir: fromDir, filter: { _ => true }, destStream: destStream, includeBaseDirectory: includeBaseDirectory)
     }
 
-    public static func archive(fromDir!: String, filter!: (String) -> Bool, destFile!: String, includeBaseDirectory!: Bool): Unit {
+    public static func archive(fromDir!: String, filter!: (String) -> Bool, destFile!: String, includeBaseDirectory!: Bool): Unit
+    throws FSException {
         try (file = File(destFile, OpenMode.Write)) {
             TarGzip.archive(fromDir: Path(fromDir), filter: { p: Path => filter(p.toString()) },
                 destStream: file, includeBaseDirectory: includeBaseDirectory)
         }
     }
 
-    public static func archive(fromDir!: Path, filter!: (Path) -> Bool, destFile!: Path, includeBaseDirectory!: Bool): Unit {
+    public static func archive(fromDir!: Path, filter!: (Path) -> Bool, destFile!: Path, includeBaseDirectory!: Bool): Unit
+    throws FSException {
         try (file = File(destFile, OpenMode.Write)) {
             TarGzip.archive(fromDir: fromDir, filter: filter,
                 destStream: file, includeBaseDirectory: includeBaseDirectory)
@@ -56,13 +60,15 @@ public class TarGzip {
         gzip.close()
     }
 
-    public static func extract(fromTarGzip!: String, destDir!: String, overwrite!: Bool): Unit {
+    public static func extract(fromTarGzip!: String, destDir!: String, overwrite!: Bool): Unit
+    throws FSException {
         try (file = File(fromTarGzip, OpenMode.Read)) {
             TarGzip.extract(fromStream: file, destDir: Path(destDir), overwrite: overwrite)
         }
     }
 
-    public static func extract(fromTarGzip!: Path, destDir!: Path, overwrite!: Bool): Unit {
+    public static func extract(fromTarGzip!: Path, destDir!: Path, overwrite!: Bool): Unit
+    throws FSException {
         try (file = File(fromTarGzip, OpenMode.Read)) {
             TarGzip.extract(fromStream: file, destDir: destDir, overwrite: overwrite)
         }

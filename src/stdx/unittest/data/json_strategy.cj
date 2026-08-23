@@ -39,6 +39,7 @@ public class JsonStrategy<T> <: DataStrategy<T> where T <: Serializable<T> {
     }
 }
 
-public func json<T>(fileName: String): JsonStrategy<T> where T <: Serializable<T> {
+public func json<T>(fileName: String): JsonStrategy<T>
+throws FSException where T <: Serializable<T> {
     JsonStrategy<T>(fileName: fileName)
 }

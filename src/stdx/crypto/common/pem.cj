@@ -25,7 +25,8 @@ public struct Pem <: Collection<PemEntry> & ToString {
      * Decode a PEM text into sequence of entries
      * @throw CryptoException - if text is without valid LABLE or is not encoded in base64.
      */
-    public static func decode(text: String): Pem {
+    public static func decode(text: String): Pem
+    throws CryptoException {
         Pem(parsePem(text.toArray()))
     }
 
