@@ -46,6 +46,7 @@ sealed abstract class JsonValue <: ToString {
      * @throws JsonException if there exists JsonValue which cannot be converted to String.
      */
     public func toJsonString(): String
+    throws JsonException
 
     /**
      * Convert JsonValue to String Without Escaping.
@@ -55,6 +56,7 @@ sealed abstract class JsonValue <: ToString {
      * @throws JsonException if there exists JsonValue which cannot be converted to String.
      */
     public func toStringWithoutEscaping(): String
+    throws JsonException
 
     /**
      * Convert JsonValue to json-String Without Escaping.
@@ -64,6 +66,7 @@ sealed abstract class JsonValue <: ToString {
      * @throws JsonException if there exists JsonValue which cannot be converted to String.
      */
     public func toJsonStringWithoutEscaping(): String
+    throws JsonException
 
     /**
      * Parses string data into JsonValue.
@@ -76,7 +79,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if malloc failed or json structure is non-standard.
      */
-    public static func fromStr(s: String): JsonValue {
+    public static func fromStr(s: String): JsonValue 
+    throws JsonException {
         parseString(s)
     }
 
@@ -98,7 +102,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonNull.
      */
-    public func asNull(): JsonNull {
+    public func asNull(): JsonNull 
+    throws JsonException {
         match (this) {
             case jsonNull: JsonNull => jsonNull
             case _ => throw JsonException("Fail to convert to JsonNull")
@@ -114,7 +119,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonBool.
      */
-    public func asBool(): JsonBool {
+    public func asBool(): JsonBool 
+    throws JsonException {
         match (this) {
             case jsonBool: JsonBool => jsonBool
             case _ => throw JsonException("Fail to convert to JsonBool")
@@ -130,7 +136,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonInt.
      */
-    public func asInt(): JsonInt {
+    public func asInt(): JsonInt 
+    throws JsonException {
         match (this) {
             case jsonInt: JsonInt => jsonInt
             case _ => throw JsonException("Fail to convert to JsonInt")
@@ -146,7 +153,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonFloat.
      */
-    public func asFloat(): JsonFloat {
+    public func asFloat(): JsonFloat 
+    throws JsonException {
         match (this) {
             case jsonFloat: JsonFloat => jsonFloat
             case jsonInt: JsonInt => JsonFloat(jsonInt.getValue())
@@ -163,7 +171,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonString.
      */
-    public func asString(): JsonString {
+    public func asString(): JsonString 
+    throws JsonException {
         match (this) {
             case jsonString: JsonString => jsonString
             case _ => throw JsonException("Fail to convert to JsonString")
@@ -179,7 +188,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonArray.
      */
-    public func asArray(): JsonArray {
+    public func asArray(): JsonArray 
+    throws JsonException {
         match (this) {
             case jsonArray: JsonArray => jsonArray
             case _ => throw JsonException("Fail to convert to JsonArray")
@@ -195,7 +205,8 @@ sealed abstract class JsonValue <: ToString {
      *
      * @throws JsonException if JsonValue cannot be converted to JsonObject.
      */
-    public func asObject(): JsonObject {
+    public func asObject(): JsonObject 
+    throws JsonException {
         match (this) {
             case jsonObject: JsonObject => jsonObject
             case _ => throw JsonException("Fail to convert to JsonObject")
