@@ -94,7 +94,7 @@ extend DataModel <: ToJson {
      *
      * @throws JsonException if any value in jo cannot be converted to DataModel.
      */
-    private static func buildDMStruct(jo: JsonObject): DataModelStruct {
+    private static func buildDMStruct(jo: JsonObject): DataModelStruct throws JsonException {
         let dms: DataModelStruct = DataModelStruct()
         let list: ArrayList<Field> = dms.getFields()
         let map: HashMap<String, JsonValue> = jo.getFields()

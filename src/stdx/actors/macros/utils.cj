@@ -31,7 +31,7 @@ func actorFutureType(t: TypeNode): RefType {
     ))
 }
 
-func findDeclUnderMacro<D>(headDecl: Decl): Option<D> where D <: Decl {
+func findDeclUnderMacro<D>(headDecl: Decl): Option<D> throws () where D <: Decl {
     if (let Some(d) <- (headDecl as D)) {
         return Some(d)
     }

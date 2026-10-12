@@ -333,7 +333,7 @@ private class FlatbufferNodeTranslator {
         FlatbufferNodeTranslator().transRoot(root, preChildren)
     }
 
-    private func transRoot(root: NodeFormat_Node, preChildren: Array<SyntaxNodeImpl>): ?SyntaxNodeImpl {
+    private func transRoot(root: NodeFormat_Node, preChildren: Array<SyntaxNodeImpl>): ?SyntaxNodeImpl throws Exception {
         let table = root.table
         let o: UInt16 = table.offset(root.ROOT)
         let off: UInt32 = UInt32(o) + table.pos
@@ -412,7 +412,7 @@ private class FlatbufferNodeTranslator {
         }
     }
 
-    private func addWhitespace(curPos: NodeFormat_Position, needNewLine!: Bool = true) {
+    private func addWhitespace(curPos: NodeFormat_Position, needNewLine!: Bool = true): Unit throws Exception {
         addWhitespace(curPos.line, curPos.column, needNewLine: needNewLine)
     }
 
@@ -474,7 +474,7 @@ private class FlatbufferNodeTranslator {
         }
     }
 
-    private func addWhitespaceAndMoveCursor(curPos: NodeFormat_Position, needNewLine!: Bool = true) {
+    private func addWhitespaceAndMoveCursor(curPos: NodeFormat_Position, needNewLine!: Bool = true): Unit throws Exception {
         addWhitespace(curPos, needNewLine: needNewLine)
         if (cursorLine < curPos.line || (cursorLine == curPos.line && cursorColumn <= curPos.column)) {
             (cursorLine, cursorColumn) = (curPos.line, curPos.column)
@@ -649,7 +649,7 @@ private class FlatbufferNodeTranslator {
         }
     }
 
-    private func transImportContent(content: NodeFormat_ImportContent): ?SyntaxNodeImpl {
+    private func transImportContent(content: NodeFormat_ImportContent): ?SyntaxNodeImpl throws Exception {
         let (kind, nodeKind) = match (content.GetKind()) {
             case ImportKind_IMPORT_SINGLE => (ImportKind.Single, SyntaxNodeKind.ImportSingle)
             case ImportKind_IMPORT_ALIAS => (ImportKind.Alias, SyntaxNodeKind.ImportAlias)
@@ -920,7 +920,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.TupleType, ret.toArray())
     }
 
-    private func transInnerOptionType(questVec: Array<NodeFormat_Position>, i: Int64, ty: NodeFormat_Type): ?SyntaxNodeImpl {
+    private func transInnerOptionType(questVec: Array<NodeFormat_Position>, i: Int64, ty: NodeFormat_Type): ?SyntaxNodeImpl throws Exception {
         if (questVec.size == i) {
             if (let Some(tyBase) <- ty.GetBase()) {
                 addWhitespaceAndMoveCursorToBegin(tyBase.GetBase())
@@ -1006,7 +1006,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.ParenType, ret.toArray())
     }
 
-    private func transBaseIdentTokens(ty: NodeFormat_Type): Unit {
+    private func transBaseIdentTokens(ty: NodeFormat_Type): Unit throws Exception {
         let table = ty.table
         let o: UInt16 = table.offset(ty.TYPE)
         let off: UInt32 = UInt32(o) + table.pos
@@ -1100,7 +1100,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.VArrayType, ret.toArray())
     }
 
-    private func transTypeAnnotation(ty: NodeFormat_Type): ?SyntaxNodeImpl {
+    private func transTypeAnnotation(ty: NodeFormat_Type): ?SyntaxNodeImpl throws Exception {
         let table = ty.table
         let o: UInt16 = table.offset(ty.TYPE)
         let off: UInt32 = UInt32(o) + table.pos
@@ -1297,7 +1297,7 @@ private class FlatbufferNodeTranslator {
     }
 
     // Decls: 
-    private func transDecl(decl: NodeFormat_Decl, preChildren: Array<SyntaxNodeImpl>): ?SyntaxNodeImpl {
+    private func transDecl(decl: NodeFormat_Decl, preChildren: Array<SyntaxNodeImpl>): ?SyntaxNodeImpl throws Exception {
         let table = decl.table
         let o: UInt16 = table.offset(decl.DECL)
         let off: UInt32 = UInt32(o) + table.pos
@@ -1392,7 +1392,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.Annotation, ret.toArray())
     }
 
-    private func transAnnotations(annotations: Array<Option<NodeFormat_Annotation>>): ?SyntaxNodeImpl {
+    private func transAnnotations(annotations: Array<Option<NodeFormat_Annotation>>): ?SyntaxNodeImpl throws Exception {
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
         for (annotation in annotations) {
@@ -2123,7 +2123,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.EnumDecl, ret.toArray(), preChildren: preChildren)
     }
 
-    private func transEnumConstructor(enumConstructor: NodeFormat_Decl): ?SyntaxNodeImpl {
+    private func transEnumConstructor(enumConstructor: NodeFormat_Decl): ?SyntaxNodeImpl throws Exception {
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
 
@@ -2360,7 +2360,7 @@ private class FlatbufferNodeTranslator {
 
     private func transDeclWithAtExclAnnotation(annos: Array<Option<NodeFormat_Annotation>>,
         invocation: NodeFormat_MacroInvocation, leadCmts: Array<Option<NodeFormat_CommentGroup>>,
-        trailCmts: Array<Option<NodeFormat_CommentGroup>>, isEnumConstructor!: Bool = false): ?SyntaxNodeImpl {
+        trailCmts: Array<Option<NodeFormat_CommentGroup>>, isEnumConstructor!: Bool = false): ?SyntaxNodeImpl throws Exception {
         // BNF: (former annos)? atExcel decl
         let tmpInnerComments = innerComments
         // transAnnotationList
@@ -2427,7 +2427,7 @@ private class FlatbufferNodeTranslator {
     }
 
     private func transMacroExpandDecl(macroExpandDecl: NodeFormat_MacroExpandDecl, preChildren: Array<SyntaxNodeImpl>,
-        isEnumConstructor!: Bool = false): ?SyntaxNodeImpl {
+        isEnumConstructor!: Bool = false): ?SyntaxNodeImpl throws Exception {
         let nodeBase = macroExpandDecl.GetBase().getOrThrow().GetBase()
         let (leadCmts, innerCmts, trailCmts) = getCommentGroups(nodeBase)
         innerComments = innerCmts
@@ -2630,7 +2630,7 @@ private class FlatbufferNodeTranslator {
     }
 
     private func transTypeArguments(typeParameters: Array<Option<NodeFormat_GenericParamDecl>>,
-        ltPos: NodeFormat_Position, gtPos: NodeFormat_Position): ?SyntaxNodeImpl {
+        ltPos: NodeFormat_Position, gtPos: NodeFormat_Position): ?SyntaxNodeImpl throws Exception {
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
 
@@ -2651,7 +2651,7 @@ private class FlatbufferNodeTranslator {
     }
 
     private func transTypeArguments(typeParameters: Array<Option<NodeFormat_Type>>, ltPos: NodeFormat_Position,
-        gtPos: NodeFormat_Position): ?SyntaxNodeImpl {
+        gtPos: NodeFormat_Position): ?SyntaxNodeImpl throws Exception {
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
         addWhitespace(ltPos)
@@ -2820,7 +2820,7 @@ private class FlatbufferNodeTranslator {
 
     // functionParameters
     // MacroExpandParam CommaToken manually added
-    private func transParamList(paramList: NodeFormat_FuncParamList, isLambda!: Bool = false): ?SyntaxNodeImpl {
+    private func transParamList(paramList: NodeFormat_FuncParamList, isLambda!: Bool = false): ?SyntaxNodeImpl throws Exception {
         addWhitespaceAndMoveCursorToBegin(paramList.GetBase())
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
@@ -2999,7 +2999,7 @@ private class FlatbufferNodeTranslator {
     }
 
     // Expr
-    private func transExpr(expr: NodeFormat_Expr, preChildren: Array<SyntaxNodeImpl>, isInterpol!: Bool = false): ?SyntaxNodeImpl {
+    private func transExpr(expr: NodeFormat_Expr, preChildren: Array<SyntaxNodeImpl>, isInterpol!: Bool = false): ?SyntaxNodeImpl throws Exception {
         let table = expr.table
         let o: UInt16 = table.offset(expr.EXPR)
         let off: UInt32 = UInt32(o) + table.pos
@@ -3220,7 +3220,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.TryExpr, ret.toArray(), preChildren: preChildren)
     }
 
-    private func transPattern(pattern: NodeFormat_Pattern): ?SyntaxNodeImpl {
+    private func transPattern(pattern: NodeFormat_Pattern): ?SyntaxNodeImpl throws Exception {
         let table = pattern.table
         let o: UInt16 = table.offset(pattern.PATTERN)
         let off: UInt32 = UInt32(o) + table.pos
@@ -4447,7 +4447,7 @@ private class FlatbufferNodeTranslator {
         builder.buildNonTerminal(SyntaxNodeKind.ForInExpr, ret.toArray(), preChildren: preChildren)
     }
 
-    private func transFuncArg(argument: NodeFormat_FuncArg): ?SyntaxNodeImpl {
+    private func transFuncArg(argument: NodeFormat_FuncArg): ?SyntaxNodeImpl throws Exception {
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)
         curChildren = ret
@@ -4834,7 +4834,7 @@ private class FlatbufferNodeTranslator {
     }
 
     // recursively parse the OR expressions in the DisjunctionCondition
-    private func createOr(ret: ArrayList<SyntaxNodeImpl>, cond: NodeFormat_Expr): Unit {
+    private func createOr(ret: ArrayList<SyntaxNodeImpl>, cond: NodeFormat_Expr): Unit throws Exception {
         // current Expr is BinaryExpr and opkind is OR, split the Expr to two ConjunctionCond
         if (let Some(binaryExpr) <- cond.GetExprAsBinaryExpr() && getSyntaxImplKind(binaryExpr.GetOperatorKind()) == SyntaxNodeKind
             .OrToken) {
@@ -4869,7 +4869,7 @@ private class FlatbufferNodeTranslator {
 
     // recursively parse the AtomicCondition in the ConjunctionCondition
     // BNF: | letpattern | parenCond | expr
-    private func createAtomicCond(ret: ArrayList<SyntaxNodeImpl>, cond: NodeFormat_Expr): Unit {
+    private func createAtomicCond(ret: ArrayList<SyntaxNodeImpl>, cond: NodeFormat_Expr): Unit throws Exception {
         curChildren = ret
         // current Expr is BinaryExpr and opkind is AND, split the Expr to two AtomicCond
         if (let Some(binaryExpr) <- cond.GetExprAsBinaryExpr() && getSyntaxImplKind(binaryExpr.GetOperatorKind()) == SyntaxNodeKind
@@ -4886,7 +4886,7 @@ private class FlatbufferNodeTranslator {
     }
 
     // BNF: conjunctionCond ||  conjunctionCond  || conjunctionCond ...
-    private func transDisjunctionCondition(disjunctionCondition: NodeFormat_Expr): ?SyntaxNodeImpl {
+    private func transDisjunctionCondition(disjunctionCondition: NodeFormat_Expr): ?SyntaxNodeImpl throws Exception {
         addWhitespaceAndMoveCursorToBegin(disjunctionCondition.GetBase())
         let ret = ArrayList<SyntaxNodeImpl>()
         addLeadCommentNodesToRet(ret)

@@ -900,7 +900,7 @@ class HttpEngineConn2 <: HttpEngineConn & InputStream {
     /*
      * Write a response, including headers, [body], [trailer].
      */
-    func writeResponse(responseBuilder: HttpResponseBuilder): Unit {
+    func writeResponse(responseBuilder: HttpResponseBuilder): Unit throws Exception {
         if (stream.isClosed()) {
             throw HttpException("Stream ${streamId} closed, write response failed.")
         }

@@ -9,7 +9,7 @@
 package stdx.compress.tar
 
 import std.io.{InputStream, OutputStream}
-import std.fs.{Directory, Path, FileInfo}
+import std.fs.{Directory, Path, FileInfo, FSException}
 import std.deriving.Derive
 
 extend Array<UInt8> {
@@ -75,7 +75,7 @@ enum TargetType {
 }
 
 extend Directory {
-    static func walkRecursively(path: Path, f: (FileInfo, TargetType) -> Unit): Unit {
+    static func walkRecursively(path: Path, f: (FileInfo, TargetType) -> Unit): Unit throws FSException {
         Directory.walk(path) { info =>
             match {
                 case info.isDirectory() =>

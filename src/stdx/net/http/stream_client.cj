@@ -765,7 +765,7 @@ class Http2ClientEngineConn <: StreamingSocket {
         }
     }
 
-    func readBody(buf: Array<UInt8>): Int64 {
+    func readBody(buf: Array<UInt8>): Int64 throws Exception {
         if (buf.size == 0) {
             throw HttpException("Read buffer size can not be zero!")
         }

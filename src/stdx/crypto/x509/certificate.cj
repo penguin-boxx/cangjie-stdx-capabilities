@@ -564,7 +564,7 @@ func verifyCertChain(cert: DerBlob, roots: Array<DerBlob>, intermediates: Array<
 }
 
 @When[os != "Windows"]
-func getCertsRecursively(root: Path, result: HashSet<X509Certificate>): Unit {
+func getCertsRecursively(root: Path, result: HashSet<X509Certificate>): Unit throws (FSException, X509Exception) {
     if (isRegular(root)) {
         let condition1 = root.extensionName == "pem"
         let condition2 = root.extensionName == "crt"

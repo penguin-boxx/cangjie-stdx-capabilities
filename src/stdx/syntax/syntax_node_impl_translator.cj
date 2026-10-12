@@ -106,7 +106,7 @@ class SyntaxNodeImplTranslator {
     }
 
     // Recursive translation
-    private func transNode(node: SyntaxNodeImpl, startPos: CodePosition, parent: ?SyntaxTreeNode): ?SyntaxTreeNode {
+    private func transNode(node: SyntaxNodeImpl, startPos: CodePosition, parent: ?SyntaxTreeNode): ?SyntaxTreeNode throws Exception {
         let beginPos = getBeginPos(node, startPos)
         let ret: ?SyntaxTreeNode = match (node) {
             case nt: NonTerminal => transNonTerminal(nt, beginPos, parent)

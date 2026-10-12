@@ -45,7 +45,7 @@ private func funcTypeIsEqualOrSubTypeOf(subType: FuncType, parentType: FuncType,
     return subType.returnType.isEqualOrSubTypeOf(parentType.returnType, visited: visited)
 }
 
-private func getClosureGenericBaseType(closureType: ClassLikeType): ClassLikeType {
+private func getClosureGenericBaseType(closureType: ClassLikeType): ClassLikeType throws () {
     if (closureType.isClosureGenericBaseType()) {
         return closureType
     }
@@ -760,7 +760,7 @@ sealed abstract class Type <: ToString & Hashable & Equatable<Type> {
         return (true, result)
     }
 
-    internal func calculateGeneric2InstTypeMapImpl(instType: Type, result: HashMap<GenericType, Type>): Bool {
+    internal func calculateGeneric2InstTypeMapImpl(instType: Type, result: HashMap<GenericType, Type>): Bool throws () {
         if (this == instType) {
             return true
         }

@@ -195,7 +195,7 @@ internal func indentToString(indent: UInt64): String {
     return StringBuilder(r' ', Int64(indent)).toString()
 }
 
-internal func lambdaToString(expr: Lambda, indent: UInt64): String {
+internal func lambdaToString(expr: Lambda, indent: UInt64): String throws CHIRException {
     var result = ""
     result += indentToString(indent)
     if (let Some(v) <- expr._result) {

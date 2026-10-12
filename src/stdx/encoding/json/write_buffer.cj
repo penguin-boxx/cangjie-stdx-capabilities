@@ -196,11 +196,11 @@ func checkJsonWriteDepth(depth: Int64): Unit {
     }
 }
 
-func jsonWriteWithoutFormat(json: JsonValue, buff: WriteBuffer, htmlSafe!: Bool = true): Unit {
+func jsonWriteWithoutFormat(json: JsonValue, buff: WriteBuffer, htmlSafe!: Bool = true): Unit throws JsonException {
     jsonWriteWithoutFormat(json, buff, 0, htmlSafe: htmlSafe)
 }
 
-func jsonWriteWithoutFormat(json: JsonValue, buff: WriteBuffer, depth: Int64, htmlSafe!: Bool = true): Unit {
+func jsonWriteWithoutFormat(json: JsonValue, buff: WriteBuffer, depth: Int64, htmlSafe!: Bool = true): Unit throws JsonException {
     checkJsonWriteDepth(depth)
     match (json) {
         case jo: JsonObject =>
@@ -236,7 +236,7 @@ func jsonWriteWithoutFormat(json: JsonValue, buff: WriteBuffer, depth: Int64, ht
     }
 }
 
-func jsonWriteObject(json: JsonObject, buff: WriteBuffer, depth: Int64, bracketInNewLine: Bool, indent: String, htmlSafe!: Bool = true): Unit {
+func jsonWriteObject(json: JsonObject, buff: WriteBuffer, depth: Int64, bracketInNewLine: Bool, indent: String, htmlSafe!: Bool = true): Unit throws JsonException {
     checkJsonWriteDepth(depth)
     if (bracketInNewLine) {
         for (_ in 0..depth) {
@@ -272,7 +272,7 @@ func jsonWriteObject(json: JsonObject, buff: WriteBuffer, depth: Int64, bracketI
     buff.append(b'}')
 }
 
-func jsonWriteArray(json: JsonArray, buff: WriteBuffer, depth: Int64, bracketInNewLine: Bool, indent: String, htmlSafe!: Bool = true): Unit {
+func jsonWriteArray(json: JsonArray, buff: WriteBuffer, depth: Int64, bracketInNewLine: Bool, indent: String, htmlSafe!: Bool = true): Unit throws JsonException {
     checkJsonWriteDepth(depth)
     if (bracketInNewLine) {
         for (_ in 0..depth) {
@@ -309,7 +309,7 @@ func jsonWriteArray(json: JsonArray, buff: WriteBuffer, depth: Int64, bracketInN
 
 // Keep container capacity estimation recomputed on each serialization. JsonArray and JsonObject expose
 // mutable backing collections, so a persistent cached capacity could become stale after external mutation.
-func asumecapacity(json: JsonValue, depth: Int64): Int64 {
+func asumecapacity(json: JsonValue, depth: Int64): Int64 throws () {
     checkJsonWriteDepth(depth)
     match (json) {
         case jo: JsonObject =>
@@ -334,6 +334,6 @@ func asumecapacity(json: JsonValue, depth: Int64): Int64 {
     }
 }
 
-func asumecapacity(json: JsonValue): Int64 {
+func asumecapacity(json: JsonValue): Int64 throws () {
     return asumecapacity(json, 0)
 }

@@ -431,7 +431,7 @@ class HttpEngine1 {
         return conn
     }
 
-    func getTunnelConnector(request: HttpRequest): StreamingSocket {
+    func getTunnelConnector(request: HttpRequest): StreamingSocket throws Exception {
         let headers = HttpHeaders()
         let host = request.headers.getFirst("Host") ?? (request.url.hostName + ":" + request.url.port.ifEmpty("443"))
         headers.add("Host", host)

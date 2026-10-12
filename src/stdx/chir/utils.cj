@@ -78,7 +78,7 @@ internal func createNewTypeWithArgs(oldType: Type, newTypeArgs: ArrayList<Type>)
     }
 }
 
-internal func getAllInstantiatedParentTypes(cur: ClassLikeType, parentTypes: ArrayList<ClassLikeType>, visited: ArrayList<(Type, Type)>): Unit {
+internal func getAllInstantiatedParentTypes(cur: ClassLikeType, parentTypes: ArrayList<ClassLikeType>, visited: ArrayList<(Type, Type)>): Unit throws () {
     if (parentTypes.contains(cur)) {
         return
     }
@@ -114,7 +114,7 @@ internal func getFieldOfType(baseTy: Type, fieldNames: ArrayList<String>): Type 
     return resType
 }
 
-private func getFieldOfTypeImpl(baseTy: Type, index: Int64): Type {
+private func getFieldOfTypeImpl(baseTy: Type, index: Int64): Type throws CHIRException {
     if (baseTy.isRefType()) {
         return getFieldOfTypeImpl(baseTy.stripAllRefs(), index)
     } else if (let Some(tt) <- (baseTy as TupleType)) {
@@ -136,7 +136,7 @@ private func getFieldOfTypeImpl(baseTy: Type, index: Int64): Type {
     throw CHIRException("Invalid type: " + baseTy.toString())
 }
 
-private func getFieldOfTypeImpl(baseTy: Type, name: String): Type {
+private func getFieldOfTypeImpl(baseTy: Type, name: String): Type throws CHIRException {
     if (baseTy.isRefType()) {
         return getFieldOfTypeImpl(baseTy.stripAllRefs(), name)
     } else if (let Some(ct) <- (baseTy as CustomType)) {
@@ -275,7 +275,7 @@ internal func getInstParentType(candidate: Array<ClassLikeType>, f: Function, ar
     throw CHIRException("No matched parent type found")
 }
 
-internal func getInstType(genericType: Type, f: Value, funcCallCtx: FuncCallContext): Type {
+internal func getInstType(genericType: Type, f: Value, funcCallCtx: FuncCallContext): Type throws CHIRException {
     if (!genericType.isGenericRelated()) {
         return genericType
     }
@@ -308,7 +308,7 @@ internal func getInstType(genericType: Type, f: Value, funcCallCtx: FuncCallCont
     return getInstType(genericType, replaceTable)
 }
 
-internal func getInstType(genericType: Type, replaceTable: HashMap<GenericType, Type>): Type {
+internal func getInstType(genericType: Type, replaceTable: HashMap<GenericType, Type>): Type throws CHIRException {
     if (!genericType.isGenericRelated()) {
         return genericType
     }

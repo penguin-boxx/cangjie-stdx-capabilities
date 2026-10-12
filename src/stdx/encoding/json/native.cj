@@ -201,7 +201,7 @@ func parseString(str: String): JsonValue {
     }
 }
 
-func parseJson(parser: JsonParser): JsonValue {
+func parseJson(parser: JsonParser): JsonValue throws JsonException {
     skipWhiteSpace(parser)
     let start = requireCurrentByte(parser)
     match {

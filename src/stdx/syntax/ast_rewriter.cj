@@ -50,7 +50,7 @@ public open class ASTRewriter {
         (rewritedNode as Package).getOrThrow()
     }
 
-    private func walkAndRewrite<T>(node: T): SyntaxTreeNode where T <: SyntaxTreeNode {
+    private func walkAndRewrite<T>(node: T): SyntaxTreeNode throws Exception where T <: SyntaxTreeNode {
         var hasRewritedChild = false
         let childCollector = ChildCollector()
         childCollector.walk(node)
@@ -209,7 +209,7 @@ func getNewPackage(oldPackage: Package, fileImpl: SyntaxNodeImpl, filePath: Stri
 }
 
 // Refresh the parent node, replace the old child nodes in the parent node with new ones, and create a new parent node.
-func getNewParent(oldParent: ?SyntaxTreeNode, impl: SyntaxNodeImpl, targetPos: CodePosition): ?SyntaxTreeNode {
+func getNewParent(oldParent: ?SyntaxTreeNode, impl: SyntaxNodeImpl, targetPos: CodePosition): ?SyntaxTreeNode throws Exception {
     if (let Some(node) <- oldParent && let Some(pkg) <- (node as Package)) {
         return getNewPackage(pkg, impl, targetPos.filePath)
     }

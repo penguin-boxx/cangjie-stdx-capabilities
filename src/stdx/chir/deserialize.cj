@@ -225,7 +225,7 @@ class CHIRDeserializerImpl {
         return getBasicTypeFromBuilder(EnumValuesPackageFormat_CHIRTypeKind(UInt8(typeFormat)))
     }
 
-    private func getType(id: UInt32): Type {
+    private func getType(id: UInt32): Type throws CHIRException {
         if (id == 0) {
             throw CHIRException("id is 0, type is not found")
         }
@@ -330,7 +330,7 @@ class CHIRDeserializerImpl {
         return None
     }
 
-    private func getExpression(id: UInt32): Expression {
+    private func getExpression(id: UInt32): Expression throws CHIRException {
         if (id == 0) {
             throw CHIRException("id is 0, expression not found")
         }
@@ -435,7 +435,7 @@ class CHIRDeserializerImpl {
         return getExpression(id)
     }
 
-    private func getCustomTypeDef(id : UInt32) : CustomTypeDef {
+    private func getCustomTypeDef(id : UInt32) : CustomTypeDef throws CHIRException {
         if (id == 0) {
             throw CHIRException("id is 0, CustomTypeDef not found")
         }
@@ -655,7 +655,7 @@ class CHIRDeserializerImpl {
         return result
     }
 
-    private func getValue(id : UInt32): Value {
+    private func getValue(id : UInt32): Value throws CHIRException {
         if (id == 0) {
             throw CHIRException("id is 0, value is not found")
         }

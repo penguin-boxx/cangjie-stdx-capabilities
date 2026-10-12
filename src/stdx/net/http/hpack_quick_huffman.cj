@@ -150,7 +150,7 @@ class QuickHuffman {
         return decode(buffer, ROOT)
     }
 
-    private static func decode(buffer: UInt64, node: NodeHuffman): (Byte, Int64) {
+    private static func decode(buffer: UInt64, node: NodeHuffman): (Byte, Int64) throws HpackException {
         if (node.isLeaf()) {
             if (node.isEOS()) {
                 throw HpackException("Got EOS! buffer: ${buffer}.")
@@ -437,7 +437,7 @@ class QuickHuffman {
         addLeaf(root, sym, codeMSB, bitsLen)
     }
 
-    private static func addLeaf(node: NodeHuffman, sym: UInt16, codeMSB: UInt64, bitsLen: UInt64): Unit {
+    private static func addLeaf(node: NodeHuffman, sym: UInt16, codeMSB: UInt64, bitsLen: UInt64): Unit throws () {
         let child = node.computeChildIfAbsent(Int64(codeMSB >> 56))
         if (bitsLen <= 8) { // is leaf
             let startIdx = (codeMSB >> 56)
