@@ -365,7 +365,7 @@ class Stream {
     }
 
     /********************************************* handle *********************************************/
-    func handle(): Unit {
+    func `handle`(): Unit {
         engineConn?.constructRequest(requestFields)
 
         let engine = engineConn ?? throw HttpException("Internal error, engineConn in stream is None.")
@@ -380,7 +380,7 @@ class Stream {
 
         try {
             let handlerStartTime = MonoTime.now()
-            handler.handle(ctx)
+            handler.`handle`(ctx)
             let handlerEndTime = MonoTime.now()
             if (server.logger.enabled(LogLevel.DEBUG)) {
                 let duration = handlerEndTime - handlerStartTime

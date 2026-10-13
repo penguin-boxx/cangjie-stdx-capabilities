@@ -15,7 +15,7 @@ import std.unicode.*
 import stdx.encoding.url.URL
 
 public interface HttpRequestHandler {
-    func handle(ctx: HttpContext): Unit
+    func `handle`(ctx: HttpContext): Unit
 }
 
 public class FuncHandler <: HttpRequestHandler {
@@ -26,7 +26,7 @@ public class FuncHandler <: HttpRequestHandler {
      *
      * @param ctx request context
      */
-    public func handle(ctx: HttpContext): Unit {
+    public func `handle`(ctx: HttpContext): Unit {
         handler(ctx)
     }
 }
@@ -37,7 +37,7 @@ public class NotFoundHandler <: HttpRequestHandler {
      *
      * @param ctx request context
      */
-    public func handle(ctx: HttpContext): Unit {
+    public func `handle`(ctx: HttpContext): Unit {
         notFound(ctx)
     }
 }
@@ -63,7 +63,7 @@ public class OptionsHandler <: HttpRequestHandler {
      *
      * @param ctx request context
      */
-    public func handle(ctx: HttpContext): Unit {
+    public func `handle`(ctx: HttpContext): Unit {
         ctx.responseBuilder.header("allow", "OPTIONS, GET, HEAD, POST, PUT, DELETE").header("content-length", "0")
     }
 }
@@ -109,7 +109,7 @@ public class RedirectHandler <: HttpRequestHandler {
      *
      * @param ctx request context.
      */
-    public func handle(ctx: HttpContext): Unit {
+    public func `handle`(ctx: HttpContext): Unit {
         var redirectUrl = url
         if (!isFullUrl && redirectUrl[0] != 47) { // r'/'
             redirectUrl = pathSplit(ctx.request.url.path) + redirectUrl
@@ -243,7 +243,7 @@ public class FileHandler <: HttpRequestHandler {
      *
      * @param ctx request context.
      */
-    public func handle(ctx: HttpContext): Unit {
+    public func `handle`(ctx: HttpContext): Unit {
         match (this.handlerType) {
             case DownLoad => this.handlerDownLoad(ctx)
             case UpLoad => this.handlerUpLoad(ctx)

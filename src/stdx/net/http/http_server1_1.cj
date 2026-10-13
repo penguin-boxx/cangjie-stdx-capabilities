@@ -62,7 +62,7 @@ class HttpServer1 <: ProtocolService {
             }
             // user handler
             let handlerStartTime = MonoTime.now()
-            handler.handle(context) // if websocket or chunk, ctx will set flag
+            handler.`handle`(context) // if websocket or chunk, ctx will set flag
             let handlerEndTime = MonoTime.now()
             if (logger.enabled(LogLevel.DEBUG)) {
                 let duration = handlerEndTime - handlerStartTime

@@ -57,11 +57,11 @@ public class X509Exception <: Exception {
 
 func runOnRawPtr<T, R>(data: Array<T>, action: (CPointer<T>, UIntNative) -> R): R where T <: CType {
     unsafe {
-        let handle = acquireArrayRawData(data)
+        let `handle` = acquireArrayRawData(data)
         try {
-            return action(handle.pointer, UIntNative(data.size))
+            return action(`handle`.pointer, UIntNative(data.size))
         } finally {
-            releaseArrayRawData(handle)
+            releaseArrayRawData(`handle`)
         }
     }
 }

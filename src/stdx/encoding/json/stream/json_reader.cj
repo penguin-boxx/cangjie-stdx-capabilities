@@ -796,11 +796,11 @@ public class JsonReader {
             checkBuffer()
             breakIndex = index
             unsafe {
-                let handle = acquireArrayRawData<Byte>(buffer)
+                let `handle` = acquireArrayRawData<Byte>(buffer)
                 try {
-                    breakIndex = CJ_ReadString(handle.pointer, index, index + availLen)
+                    breakIndex = CJ_ReadString(`handle`.pointer, index, index + availLen)
                 } finally {
-                    releaseArrayRawData(handle)
+                    releaseArrayRawData(`handle`)
                 }
             }
             if (breakIndex == index + availLen) { // read till the end of buffer, fill buffer and continue

@@ -430,7 +430,7 @@ class HttpServer2 <: ProtocolService {
                 ThreadContext.connId = connId
                 reqCount.fetchAdd(1)
                 try {
-                    stream.handle()
+                    stream.`handle`()
                 } catch (e: Exception) {
                     stream.close(H2Error.InternalError, e.message)
                 } finally {

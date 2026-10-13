@@ -508,9 +508,9 @@ struct X509CertInfo {
 
 // Build RawX509Cert and collect raw handles.
 func getRawX509CertAndCollectHandles(data: Array<Byte>, handles: ArrayList<CPointerHandle<Byte>>) {
-    let handle = unsafe { acquireArrayRawData(data) }
-    handles.add(handle)
-    RawX509Cert(handle.pointer, UIntNative(data.size))
+    let `handle` = unsafe { acquireArrayRawData(data) }
+    handles.add(`handle`)
+    RawX509Cert(`handle`.pointer, UIntNative(data.size))
 }
 
 func writeChainAndCollectHandles(
@@ -553,8 +553,8 @@ func verifyCertChain(cert: DerBlob, roots: Array<DerBlob>, intermediates: Array<
     let status = unsafe { verifyX509Cert(certs, chains, chains + 1) }
     unsafe {
         // Release CPointer handlers.
-        for (handle in handles) {
-            releaseArrayRawData(handle)
+        for (`handle` in handles) {
+            releaseArrayRawData(`handle`)
         }
         // Free memeory.
         LibC.free(certs)
